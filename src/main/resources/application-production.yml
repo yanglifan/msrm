@@ -1,0 +1,13 @@
+spring:
+  datasource:
+#    platform: mysql
+    driverClassNanme: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/test1
+    username: root
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 9000

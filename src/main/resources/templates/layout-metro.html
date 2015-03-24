@@ -1,0 +1,59 @@
+<html ng-app="dsr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title>Layout</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/metro-bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/iconFont.css}"/>
+    <style type="text/css">
+        html,
+        body {
+            overflow-x: hidden; /* Prevent scroll on narrow devices */
+        }
+
+        body {
+            padding-top: 70px;
+        }
+
+        footer {
+            padding: 30px 0;
+        }
+    </style>
+    <script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+    <script th:src="@{/js/angular.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/ui-bootstrap-tpls-0.11.0.min.js}"></script>
+    <script th:src="@{/js/application.js}"></script>
+    <script>
+        angular.module('dsrApp', ['ui.bootstrap']);
+    </script>
+</head>
+<body class="metro">
+
+<div class="container">
+    <div class="row">
+        <nav class="navigation-bar fixed-top shadow">
+            <nav class="navigation-bar-content container">
+                <item class="element">
+                    <!--<img th:src="@{/pictures/janssen-logo2.png}" style="width: 60px" />-->
+                    <i class="icon-home"></i>
+                    JNJ DSR System
+                    <sup>beta</sup>
+                </item>
+                <span class="element-divider">::before</span>
+                <item class="element">OVERVIEW</item>
+                <span class="element-divider">::before</span>
+                <item class="element">VISIT RECORD</item>
+                <span class="element-divider">::before</span>
+                <item class="element">DOCTOR</item>
+                <span class="element-divider">::before</span>
+                <item class="element">USER</item>
+            </nav>
+        </nav>
+    </div>
+
+    <div layout:fragment="content">
+    </div>
+</div>
+</body>
+</html>

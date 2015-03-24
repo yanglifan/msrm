@@ -1,0 +1,232 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Visit Record</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen"/>
+    <script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+    <script>
+        $("#datetimepicker").datetimepicker({
+            todayBtn: true,
+            todayHighlight: true
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+<div class="row" ng-app="recordModule" ng-controller="RecordControl">
+<div class="col-md-3">
+    <div class="panel panel-primary">
+        <div class="panel-heading">New Record</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Hospital</label>
+
+                            <div class="col-md-9">
+                                <select class="form-control" ng-model="hospital"
+                                        ng-options="h.name for h in hospitals"
+                                        ng-change="queryDoctors(hospital)">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Doctor</label>
+
+                            <div class="col-md-9">
+                                <select class="form-control" ng-model="recordResource.doctor"
+                                        ng-options="do.name for do in doctors">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Visit At</label>
+
+                            <div class="col-md-9">
+                                <div id="datetimepicker" class="form_datetime input-group date"
+                                     data-date-format="yyyy-mm-dd hh:ii"
+                                     data-link-field="dtp_input1">
+                                    <input class="form-control" type="text" readonly="true"
+                                           ng-model="recordResource.visitAt"/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"
+                                                      onclick="$('#datetimepicker').datetimepicker('show')">
+                                            </span>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="comment in recordResource.medicineComments">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select class="form-control" ng-model="comment.medicine"
+                                    ng-options="m.name for m in medicines">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-md-12">
+                            <textarea class="form-control" placeholder="Enter the medicine comment"
+                                      ng-model="comment.comment">
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="addComment()">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    Add
+                                </button>
+                                <button type="button" class="btn btn-default" ng-click="removeComment(comment)">
+                                    <span class="glyphicon glyphicon-minus-sign"></span>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="pull-right">
+                        <button type="button" class="btn btn-link" ng-click="initVisitRecord()">
+                            Clear
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="saveVisitRecord()">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Save
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-9">
+    <div class="alert alert-warning fade in" style="display:none">...</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Visit Record List</div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th class="text-center">
+                    ID
+                </th>
+                <th class="text-center">
+                    Hospital
+                </th>
+                <th class="text-center">
+                    Doctor
+                </th>
+                <th class="text-center">
+                    Visit At
+                </th>
+                <th class="text-center">
+                    Actions
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="record in records">
+                <td width="5%">
+                    {{record.id}}
+                </td>
+                <td width="25%">
+                    {{record.doctor.hospital.name}}
+                </td>
+                <td width="25%">
+                    {{record.doctor.name}}
+                </td>
+                <td width="25%">
+                    {{record.visitAt}}
+                </td>
+                <td>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs"
+                                ng-click="getVisitRecord(record.id)">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                data-target="#deleteConfirmModal" ng-click="setDeleteId(record.id)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <ul class="pagination pull-right">
+                            <li><a href="#">&laquo;</a></li>
+                            <li ng-repeat="n in range"
+                                ng-class="{active: n == currentPage}">
+                                <a ng-click="pageChanged(n)">{{n}}</a>
+                            </li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Delete Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Delete a visit record action will delete all related medicine comments.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                ng-click="deleteRecord()">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>User</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen"/>
+    <script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+    <script>
+    </script>
+</head>
+<body>
+<div layout:fragment="content" ng-controller="UserControl">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Create a New Representative</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Username</label>
+
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" placeholder="Enter a username"
+                                               ng-model="user.username"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Password</label>
+
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" placeholder="Enter a password"
+                                               ng-model="user.password"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Confirm</label>
+
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control"
+                                               placeholder="Enter a password again"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Email</label>
+
+                                    <div class="col-md-9">
+                                        <input type="email" class="form-control" placeholder="Enter a email address"
+                                               ng-model="user.email"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert alert-info fade in" style="display:none">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <strong>Create Success</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="pull-right" style="padding-bottom: 10px">
+                                <button type="button" class="btn btn-link">Cancel</button>
+                                <button type="button" class="btn btn-primary"
+                                        ng-click="user.$save({}, successNotify)">
+                                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                                    Save
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">Representative List</div>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-left">
+                            Username
+                        </th>
+                        <th class="text-left">
+                            Email
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in users">
+                        <td>
+                            {{user.username}}
+                        </td>
+                        <td>
+                            {{user.email}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-4">
+                                <ul class="pagination pull-right">
+                                    <li><a href="#">&laquo;</a></li>
+                                    <li ng-repeat="n in range"
+                                        ng-class="{active: n == currentPage}">
+                                        <a ng-click="pageChanged(n)">{{n}}</a>
+                                    </li>
+                                    <li><a href="#">&raquo;</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

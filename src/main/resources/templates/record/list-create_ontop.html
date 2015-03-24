@@ -1,0 +1,179 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Visit Record</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen"/>
+    <script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+    <script>
+        function CreateRecordControl($scope, $http) {
+
+            $scope.create = function (doctor) {
+                $http.post("/api/records", doctor);
+            }
+        }
+
+        $("#datetimepicker").datetimepicker({
+            todayBtn: true,
+            todayHighlight: true
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container" ng-controller="RecordControl">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">New Record</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="hospitalSelect" class="col-md-3 control-label">Hospital</label>
+
+                                    <div class="col-md-8">
+                                        <select id="hospitalSelect" class="form-control">
+                                            <option>Hospital 1</option>
+                                            <option>Hospital 2</option>
+                                            <option>Hospital 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="doctorSelect" class="col-md-3 control-label">Doctor</label>
+
+                                    <div class="col-md-8">
+                                        <select id="doctorSelect" class="form-control">
+                                            <option>Doctor 1</option>
+                                            <option>Doctor 2</option>
+                                            <option>Doctor 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group ">
+                                    <label class="col-md-3 control-label">Visit At</label>
+
+                                    <div id="datetimepicker" class="form_datetime col-md-8 input-group date"
+                                         data-date-format="dd MM yyyy - HH:ii p"
+                                         data-link-field="dtp_input1">
+                                        <input class="form-control" type="text" readonly="true"/>
+                                        <span class="input-group-addon ">
+                                            <span class="glyphicon glyphicon-calendar"
+                                                  onclick="$('#datetimepicker').datetimepicker('show')">
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!--<div class="form-horizontal" role="form">-->
+                            <!--<div class="form-group">-->
+                            <!--<label for="medicineSelect" class="col-md-2 control-label">Medicine Comment</label>-->
+
+                            <!--<div class="col-md-10">-->
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <select id="medicineSelect" class="form-control">
+                                        <option>Medicine 1</option>
+                                        <option>Medicine 2</option>
+                                        <option>Medicine 3</option>
+                                    </select>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Enter the doctor's comment"/>
+                                <!--<button type="button" class="btn btn-default">-->
+                                <!--<span class="glyphicon glyphicon-plus"></span>-->
+                                <!--</button>-->
+                                <!--<button type="button" class="btn btn-default">-->
+                                <!--<span class="glyphicon glyphicon-remove"></span>-->
+                                <!--</button>-->
+                            </div>
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary pull-right">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Table -->
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="text-left">
+                        #
+                    </th>
+                    <th class="text-left">
+                        Hospital
+                    </th>
+                    <th class="text-left">
+                        Doctor
+                    </th>
+                    <th class="text-left">
+                        Visit At
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="record in records">
+                    <td>
+                        {{record.id}}
+                    </td>
+                    <td>
+                        {{record.doctor.hospital}}
+                    </td>
+                    <td>
+                        {{record.doctor.name}}
+                    </td>
+                    <td>
+                        {{record.visitAt}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <ul class="pagination pull-right">
+                        <!--<li><a class="icon-first-2"></a></li>-->
+                        <li><a href="#">&laquo;</a></li>
+                        <li ng-repeat="n in range(totalPages)"
+                            ng-class="{active: n == currentPage}">
+                            <a ng-click="pageChanged(n)">{{n}}</a>
+                        </li>
+                        <li><a href="#">&raquo;</a></li>
+                        <!--<li><a class="icon-last-2"></a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

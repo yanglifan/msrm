@@ -1,0 +1,8 @@
+logging:
+  config: classpath:logback-dev.xml
+
+spring:
+  thymeleaf:
+    cache: false
+  profiles:
+    active: dev

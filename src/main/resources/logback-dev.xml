@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/basic.xml" />
+
+    <logger name="cn.com.janssen.dsr" level="DEBUG">
+        <appender-ref ref="FILE" />
+    </logger>
+    <!--<logger name="org.springframework" level="DEBUG" />-->
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>testFile.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>

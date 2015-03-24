@@ -1,0 +1,235 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Visit Record</title>
+    <link rel="stylesheet" th:href="@{/css/dataTables.bootstrap.css}"/>
+    <script th:src="@{/js/dataTables.bootstrap.js}"></script>
+    <script>
+        function CreateRecordControl($scope, $http) {
+            $scope.create = function (doctor) {
+                $http.post("/api/records", doctor);
+            }
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="toolbar transparent">
+                <button data-toggle="modal" data-target="#create"><i class="icon-plus on-left"></i>New</button>
+                <button><i class="icon-pencil on-left"></i>Edit</button>
+                <button><i class="icon-remove on-left"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="row" style="margin: 5px">
+            <div class="col-md-2">
+                <img src="xx.png" style="width: 120px; height: 120px" alt="120x120"/>
+            </div>
+            <div class="col-md-3">
+                <div class="input-control select">
+                    <select>
+                        <option>Hospital 1</option>
+                        <option>Hospital 2</option>
+                        <option>Hospital 3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-control select">
+                    <select>
+                        <option>Doctor 1</option>
+                        <option>Doctor 2</option>
+                        <option>Doctor 3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class="col-md-3">
+                <div class="input-control select">
+                    <select>
+                        <option>Medicine 1</option>
+                        <option>Medicine 2</option>
+                        <option>Medicine 3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" placeholder="Comment"/>
+                    <button class="btn-clear" tabindex="-1"></button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="toolbar transparent">
+                    <button><i class="icon-plus-2 on-left" style="padding: 5px"></i></button>
+                    <button><i class="icon-cancel-2 on-left" style="padding: 5px"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row"></div>
+    <div class="row">
+        <div class="col-md-12" ng-controller="RecordControl">
+            <table class="table bordered striped hovered">
+                <thead>
+                <tr>
+                    <th class="text-left">
+                        #
+                    </th>
+                    <th class="text-left">
+                        Hospital
+                    </th>
+                    <th class="text-left">
+                        Doctor
+                    </th>
+                    <th class="text-left">
+                        Visit At
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="record in records">
+                    <td>
+                        {{record.id}}
+                    </td>
+                    <td>
+                        {{record.doctor.hospital}}
+                    </td>
+                    <td>
+                        {{record.doctor.name}}
+                    </td>
+                    <td>
+                        {{record.visitAt}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <ul>
+                    <li><a class="icon-first-2"></a></li>
+                    <li><a class="icon-previous"></a></li>
+                    <li ng-repeat="n in range(totalPages)"
+                        ng-class="{active: n == currentPage}">
+                        <a ng-click="pageChanged(n)">{{n}}</a>
+                    </li>
+                    <li><a class="icon-next"></a></li>
+                    <li><a class="icon-last-2"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="create" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         ng-controller="CreateRecordControl">
+        <div class="modal-dialog">
+            <div class="window shadow">
+                <div class="caption">
+                    <div class="title">Create New Visit Record</div>
+                    <button class="btn-close"></button>
+                </div>
+                <div class="content">
+                    <div class="container-fluid modal-body">
+                        <form class="form-horizontal" role="form">
+
+                            <div class="input-control text" data-role="input-control">
+                                <input type="text" placeholder="type text"/>
+                                <button class="btn-clear" tabindex="-1"></button>
+                            </div>
+                            <!--<div class="form-group">-->
+                            <!--<div class="row">-->
+                            <!--<div class="col-sm-3">-->
+                            <!--<label class="control-label pull-right">医院</label>-->
+                            <!--</div>-->
+
+                            <!--<div class="col-sm-6">-->
+                            <!--<select class="form-control" ng-model="doctor.hospital">-->
+                            <!--<option>协和医院</option>-->
+                            <!--<option>武警总医院</option>-->
+                            <!--</select>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="form-group">-->
+                            <!--<div class="row">-->
+                            <!--<div class="col-sm-3">-->
+                            <!--<label class="control-label pull-right">医生</label>-->
+                            <!--</div>-->
+
+                            <!--<div class="col-sm-6">-->
+                            <!--<select class="form-control" ng-model="doctor.name">-->
+                            <!--<option>张三</option>-->
+                            <!--<option>李四</option>-->
+                            <!--</select>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="" ng-click="create(doctor)">
+                            <i class="icon-floppy"></i>
+                            Save
+                        </button>
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+            <!--<h4 class="modal-title" id="myModalLabel">新建拜访记录</h4>-->
+            <!--</div>-->
+
+            <!--<div class="container-fluid modal-body">-->
+            <!--<form class="form-horizontal" role="form">-->
+            <!--<div class="form-group">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-3">-->
+            <!--<label class="control-label pull-right">医院</label>-->
+            <!--</div>-->
+
+            <!--<div class="col-sm-6">-->
+            <!--<select class="form-control" ng-model="doctor.hospital">-->
+            <!--<option>协和医院</option>-->
+            <!--<option>武警总医院</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-3">-->
+            <!--<label class="control-label pull-right">医生</label>-->
+            <!--</div>-->
+
+            <!--<div class="col-sm-6">-->
+            <!--<select class="form-control" ng-model="doctor.name">-->
+            <!--<option>张三</option>-->
+            <!--<option>李四</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</form>-->
+            <!--</div>-->
+
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-primary" ng-click="create(doctor)">保存</button>-->
+            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>
